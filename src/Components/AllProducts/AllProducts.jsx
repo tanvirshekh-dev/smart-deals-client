@@ -21,9 +21,6 @@ const AllProducts = () => {
           <Product key={product._id} product={product}></Product>
         ))}
       </div>
-      <div className=" flex items-center justify-center">
-        <button className="btn btn-primary w-40 mt-10">Show All</button>
-      </div>
     </div>
   );
 };

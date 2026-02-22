@@ -2,6 +2,7 @@ import React from 'react';
 import { Search } from "lucide-react";
 import heroImg1 from "../../../public/Images/left-hero.png";
 import heroImg2 from "../../../public/Images/right-hero.png";
+import { Link } from 'react-router';
 
 const Hero = () => {
     return (
@@ -37,8 +38,8 @@ const Hero = () => {
           </div>
           {/* button field */}
           <div>
-            <button className="btn btn-primary mr-4">Watch All Product</button>
-            <button className="btn btn-secondary">Post An Product</button>
+            <Link to={"/allProducts"} className="btn btn-primary mr-4">Watch All Product</Link>
+            <Link to={"/createProduct"} className="btn btn-secondary">Post An Product</Link>
           </div>
         </div>
       </div>

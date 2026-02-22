@@ -1,5 +1,6 @@
 import React, { use } from "react";
 import Product from "../Product/Product";
+import { Link } from "react-router";
 
 const LatestProducts = ({ latestProductPromise }) => {
   const products = use(latestProductPromise);
@@ -16,7 +17,7 @@ const LatestProducts = ({ latestProductPromise }) => {
         ))}
       </div>
       <div className=" flex items-center justify-center">
-        <button className="btn btn-primary w-40 mt-10">Show All</button>
+        <Link to={"/allProducts"} className="btn btn-primary w-40 mt-10">Show All</Link>
       </div>
     </div>
   );
