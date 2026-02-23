@@ -1,6 +1,7 @@
 import React from "react";
 import Hero from "./Hero";
 import LatestProducts from "../LatestProducts/LatestProducts";
+import Footer from "../Footer/Footer";
 
 const latestProductPromise = fetch(
   "http://localhost:3000/latest-products"
@@ -14,6 +15,8 @@ const Home = () => {
       <LatestProducts
         latestProductPromise={latestProductPromise}
       ></LatestProducts>
+      {/* footer */}
+      <Footer></Footer>
     </div>
   );
 };
