@@ -6,9 +6,15 @@ const MyBids = () => {
   const { user } = use(AuthContext);
   const [bids, setBids] = useState([]);
 
+  // console.log("access token", user.accessToken);
+
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/bids?email=${user.email}`)
+      fetch(`http://localhost:3000/bids?email=${user.email}`, {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`
+        }
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
@@ -40,10 +46,10 @@ const MyBids = () => {
                 text: "Your bids has been deleted.",
                 icon: "success",
               });
-                
-                // show the delete immediate in ui
-                const remainingBids = bids.filter(bid => bid._id !== _id)
-                setBids(remainingBids)
+
+              // show the delete immediate in ui
+              const remainingBids = bids.filter((bid) => bid._id !== _id);
+              setBids(remainingBids);
             }
           });
       }
