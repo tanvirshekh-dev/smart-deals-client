@@ -1,5 +1,5 @@
 import React, { use, useEffect, useRef, useState } from "react";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 
@@ -8,6 +8,7 @@ const ProductDetails = () => {
   const [bids, setBids] = useState([]);
   const bidModalRef = useRef(null);
   const { user } = use(AuthContext);
+  const product = useLoaderData();
 
   useEffect(() => {
     fetch(`http://localhost:3000/products/bids/${productId}`)
@@ -66,10 +67,10 @@ const ProductDetails = () => {
     <div className="bg-gray-100">
       {/* product info */}
       <div className="grid grid-cols-2 gap-6 py-4 w-11/12 mx-auto">
-        <div className="pt-4">
+        <div className="pt-12">
           <img
-            className="flex items-center rounded-md h-96"
-            src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600"
+            className="flex items-center rounded-md h-96 w-full"
+            src={product.image}
             alt=""
           />
           {/* card  */}
@@ -81,36 +82,23 @@ const ProductDetails = () => {
             <div class="flex justify-between items-center mb-3 text-sm">
               <p>
                 <span class="text-[#7E57C2] font-medium">Condition :</span>
-                <span class="text-[#0D1B3E] font-bold">New</span>
+                <span class="text-[#0D1B3E] font-bold">{product.condition}</span>
               </p>
               <p>
                 <span class="text-[#7E57C2] font-medium">Usage Time :</span>
-                <span class="text-[#0D1B3E] font-bold">3 Month</span>
+                <span class="text-[#0D1B3E] font-bold">{product.usage}</span>
               </p>
             </div>
 
             <hr class="border-t border-gray-300 mb-5" />
 
             <div class="text-gray-400 text-[13px] leading-relaxed space-y-4">
-              <p>
-                It Is A Long Established Fact That A Reader Will Be Distracted
-                By The Readable Content Of A Page When Looking At Its Layout.
-                The Point Of Using Lorem Ipsum Is That It Has A More-Or-Less
-                Normal Distribution Of Letters, As Opposed To Using 'Content
-                Here, Content Here', Making It Look Like Readable English.
-              </p>
-              <p>
-                Many Desktop Publishing Packages And Web Page Editors Now Use
-                Lorem Ipsum As Their Default Model Text, And A Search For 'lorem
-                Ipsum' Will Uncover Many Web Sites Still In Their Infancy.
-                Various Versions Have Evolved Over The Years, Sometimes By
-                Accident, Sometimes On Purpose (Injected Humour And The Like).
-              </p>
+              <p>{product.description}</p>
             </div>
           </div>
         </div>
 
-        <div>
+        <div className="pt-6">
           <div class="max-w-6xl mx-auto p-4 md:p-8 min-h-screen font-sans text-[#0D1B3E]">
             <div class="flex items-center gap-2 mb-6 cursor-pointer hover:opacity-70 transition-all">
               <svg
@@ -127,15 +115,15 @@ const ProductDetails = () => {
                   d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
                 />
               </svg>
-              <span class="font-bold text-sm">Back To Products</span>
+              <Link to={"/allProducts"} class="font-bold text-sm">Back To Products</Link>
             </div>
 
             <div class="mb-8">
               <h1 class="text-3xl md:text-5xl font-bold mb-4">
-                Yamaha Fz Guitar For Sale
+                {product.title}
               </h1>{" "}
               <span class="bg-[#E9E1FF] text-[#7E57C2] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
-                Art And Hobbies{" "}
+                {product.category}{" "}
               </span>
             </div>
 
@@ -143,7 +131,7 @@ const ProductDetails = () => {
               <div class="lg:col-span-5 space-y-5">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                   <h3 class="text-[#4CAF50] text-3xl font-bold mb-1">
-                    $22.5 - 30
+                    $ {product.price_min} - {product.price_max}
                   </h3>{" "}
                   <p class="text-gray-500 text-sm font-medium">
                     Price starts from
@@ -156,12 +144,12 @@ const ProductDetails = () => {
                     <p>
                       <span class="font-bold">Product ID:</span>{" "}
                       <span class="text-gray-600 ml-1">
-                        68f753ae2174ca368ec882f4
+                        {product._id}
                       </span>
                     </p>{" "}
                     <p>
                       <span class="font-bold">Posted:</span>{" "}
-                      <span class="text-gray-600 ml-1">10/19/2024</span>
+                      <span class="text-gray-600 ml-1">{product.created_at}</span>
                     </p>{" "}
                   </div>
                 </div>
@@ -172,15 +160,15 @@ const ProductDetails = () => {
                   <div class="flex items-center gap-4 mb-6">
                     <div class="w-14 h-14 rounded-full bg-gray-200 overflow-hidden">
                       <img
-                        src="https://example.com/sellers/tanvir.jpg"
+                        src={product.seller_image}
                         alt="Seller"
                         class="w-full h-full object-cover"
                       />{" "}
                     </div>
                     <div>
-                      <h4 class="font-bold text-lg">Tanvir Hasan</h4>{" "}
+                      <h4 class="font-bold text-lg">{product.seller_name}</h4>{" "}
                       <p class="text-gray-400 text-xs">
-                        tanvir01@gmail.com
+                        {product.email}
                       </p>{" "}
                     </div>
                   </div>
@@ -188,16 +176,16 @@ const ProductDetails = () => {
                   <div class="space-y-4 text-[15px]">
                     <p>
                       <span class="font-bold">Location:</span>{" "}
-                      <span class="text-gray-600 ml-1">Dhaka</span>
+                      <span class="text-gray-600 ml-1">{product.location}</span>
                     </p>{" "}
                     <p>
                       <span class="font-bold">Contact:</span>{" "}
-                      <span class="text-gray-600 ml-1">tanvir01_contact</span>
+                      <span class="text-gray-600 ml-1">{product.seller_contact}</span>
                     </p>
                     <div class="flex items-center">
                       <span class="font-bold mr-3">Status:</span>
                       <span class="bg-[#FFC107] text-[#0D1B3E] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">
-                        Pending{" "}
+                        {product.status}
                       </span>
                     </div>
                   </div>
@@ -261,6 +249,8 @@ const ProductDetails = () => {
           </dialog>
         </div>
       </div>
+
+
 
       {/* bids for the products */}
       <div className="w-11/12 mx-auto">
