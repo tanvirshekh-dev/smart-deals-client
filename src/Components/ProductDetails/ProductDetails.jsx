@@ -11,14 +11,18 @@ const ProductDetails = () => {
   const product = useLoaderData();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products/bids/${productId}`)
+    fetch(`http://localhost:3000/products/bids/${productId}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log("bids for the product: ", data);
         data.sort((a, b) => parseInt(a.bid_price) - parseInt(b.bid_price));
         setBids(data);
       });
-  }, [productId]);
+  }, [productId, user]);
 
   const handleBidModalOpen = () => {
     bidModalRef.current.showModal();
@@ -69,7 +73,7 @@ const ProductDetails = () => {
       <div className="grid grid-cols-2 gap-6 py-4 w-11/12 mx-auto">
         <div className="pt-12">
           <img
-            className="flex items-center rounded-md h-96 w-full"
+            className="flex items-center rounded-lg h-[60%] w-full object-cover bg-center bg-cover"
             src={product.image}
             alt=""
           />
@@ -82,7 +86,9 @@ const ProductDetails = () => {
             <div class="flex justify-between items-center mb-3 text-sm">
               <p>
                 <span class="text-[#7E57C2] font-medium">Condition :</span>
-                <span class="text-[#0D1B3E] font-bold">{product.condition}</span>
+                <span class="text-[#0D1B3E] font-bold">
+                  {product.condition}
+                </span>
               </p>
               <p>
                 <span class="text-[#7E57C2] font-medium">Usage Time :</span>
@@ -115,7 +121,9 @@ const ProductDetails = () => {
                   d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
                 />
               </svg>
-              <Link to={"/allProducts"} class="font-bold text-sm">Back To Products</Link>
+              <Link to={"/allProducts"} class="font-bold text-sm">
+                Back To Products
+              </Link>
             </div>
 
             <div class="mb-8">
@@ -143,13 +151,13 @@ const ProductDetails = () => {
                   <div class="space-y-3 text-[15px]">
                     <p>
                       <span class="font-bold">Product ID:</span>{" "}
-                      <span class="text-gray-600 ml-1">
-                        {product._id}
-                      </span>
+                      <span class="text-gray-600 ml-1">{product._id}</span>
                     </p>{" "}
                     <p>
                       <span class="font-bold">Posted:</span>{" "}
-                      <span class="text-gray-600 ml-1">{product.created_at}</span>
+                      <span class="text-gray-600 ml-1">
+                        {product.created_at}
+                      </span>
                     </p>{" "}
                   </div>
                 </div>
@@ -167,9 +175,7 @@ const ProductDetails = () => {
                     </div>
                     <div>
                       <h4 class="font-bold text-lg">{product.seller_name}</h4>{" "}
-                      <p class="text-gray-400 text-xs">
-                        {product.email}
-                      </p>{" "}
+                      <p class="text-gray-400 text-xs">{product.email}</p>{" "}
                     </div>
                   </div>
 
@@ -180,7 +186,9 @@ const ProductDetails = () => {
                     </p>{" "}
                     <p>
                       <span class="font-bold">Contact:</span>{" "}
-                      <span class="text-gray-600 ml-1">{product.seller_contact}</span>
+                      <span class="text-gray-600 ml-1">
+                        {product.seller_contact}
+                      </span>
                     </p>
                     <div class="flex items-center">
                       <span class="font-bold mr-3">Status:</span>
@@ -249,8 +257,6 @@ const ProductDetails = () => {
           </dialog>
         </div>
       </div>
-
-
 
       {/* bids for the products */}
       <div className="w-11/12 mx-auto">

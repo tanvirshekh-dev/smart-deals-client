@@ -16,7 +16,6 @@ const Home = () => {
         latestProductPromise={latestProductPromise}
       ></LatestProducts>
       {/* footer */}
-      <Footer></Footer>
     </div>
   );
 };
