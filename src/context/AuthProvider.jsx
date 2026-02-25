@@ -9,6 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
+import { data } from "react-router";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -39,7 +40,27 @@ const AuthProvider = ({ children }) => {
   // observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      setUser(currentUser)
+      console.log('current user', currentUser)
+      if (currentUser) {
+        const loggedUser = {email: currentUser.email}
+
+        fetch('http://localhost:3000/getToken', {
+          method: 'POST',
+          headers: {
+            'content-type' : 'application/json'
+          },
+          body: JSON.stringify(loggedUser)
+        })
+        .then(res => res.json())
+          .then(data => {
+          console.log('after gating token', data.token)
+          localStorage.setItem('token', data.token )
+        })
+      }
+      else {
+        localStorage.removeItem('token')
+      }
       setLoading(false);
     });
 
