@@ -30,10 +30,6 @@ const router = createBrowserRouter([
         Component: AllProducts,
       },
       {
-        path: "/createProduct",
-        Component: CreateProduct,
-      },
-      {
         path: "/login",
         Component: Login,
       },
@@ -52,6 +48,12 @@ const router = createBrowserRouter([
             <MyBids></MyBids>
           </PrivetRoute>
         ),
+      },
+       {
+        path: "/createProduct",
+         element: <PrivetRoute>
+          <CreateProduct></CreateProduct>
+        </PrivetRoute>
       },
       {
         path: "/productDetails/:id",

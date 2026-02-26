@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const ProductDetails = () => {
   const { _id: productId } = useLoaderData();
@@ -11,18 +12,27 @@ const ProductDetails = () => {
   const product = useLoaderData();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products/bids/${productId}`, {
-      headers: {
-        authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => res.json())
+    axios
+      .get(`http://localhost:3000/products/bids/${productId}`)
       .then((data) => {
-        console.log("bids for the product: ", data);
-        data.sort((a, b) => parseInt(a.bid_price) - parseInt(b.bid_price));
-        setBids(data);
+        console.log("after axios get", data);
+        setBids(data.data);
       });
-  }, [productId, user]);
+  }, [productId]);
+
+  //  useEffect(() => {
+  //   fetch(`http://localhost:3000/products/bids/${productId}`, {
+  //     headers: {
+  //       authorization: `Bearer ${user.accessToken}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log("bids for the product: ", data);
+  //       data.sort((a, b) => parseInt(a.bid_price) - parseInt(b.bid_price));
+  //       setBids(data);
+  //     });
+  // }, [productId, user]);
 
   const handleBidModalOpen = () => {
     bidModalRef.current.showModal();
@@ -79,41 +89,43 @@ const ProductDetails = () => {
           />
           {/* card  */}
           <div className="bg-white p-4 mt-6 rounded-md">
-            <h2 class="text-[#0D1B3E] text-xl font-bold mb-6">
+            <h2 className="text-[#0D1B3E] text-xl font-bold mb-6">
               Product Description
             </h2>
 
-            <div class="flex justify-between items-center mb-3 text-sm">
+            <div className="flex justify-between items-center mb-3 text-sm">
               <p>
-                <span class="text-[#7E57C2] font-medium">Condition :</span>
-                <span class="text-[#0D1B3E] font-bold">
+                <span className="text-[#7E57C2] font-medium">Condition :</span>
+                <span className="text-[#0D1B3E] font-bold">
                   {product.condition}
                 </span>
               </p>
               <p>
-                <span class="text-[#7E57C2] font-medium">Usage Time :</span>
-                <span class="text-[#0D1B3E] font-bold">{product.usage}</span>
+                <span className="text-[#7E57C2] font-medium">Usage Time :</span>
+                <span className="text-[#0D1B3E] font-bold">
+                  {product.usage}
+                </span>
               </p>
             </div>
 
-            <hr class="border-t border-gray-300 mb-5" />
+            <hr className="border-t border-gray-300 mb-5" />
 
-            <div class="text-gray-400 text-[13px] leading-relaxed space-y-4">
+            <div className="text-gray-400 text-[13px] leading-relaxed space-y-4">
               <p>{product.description}</p>
             </div>
           </div>
         </div>
 
         <div className="pt-6">
-          <div class="max-w-6xl mx-auto p-4 md:p-8 min-h-screen font-sans text-[#0D1B3E]">
-            <div class="flex items-center gap-2 mb-6 cursor-pointer hover:opacity-70 transition-all">
+          <div className="max-w-6xl mx-auto p-4 md:p-8 min-h-screen font-sans text-[#0D1B3E]">
+            <div className="flex items-center gap-2 mb-6 cursor-pointer hover:opacity-70 transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="2.5"
                 stroke="currentColor"
-                class="w-4 h-4"
+                className="w-4 h-4"
               >
                 <path
                   stroke-linecap="round"
@@ -121,78 +133,84 @@ const ProductDetails = () => {
                   d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
                 />
               </svg>
-              <Link to={"/allProducts"} class="font-bold text-sm">
+              <Link to={"/allProducts"} className="font-bold text-sm">
                 Back To Products
               </Link>
             </div>
 
-            <div class="mb-8">
-              <h1 class="text-3xl md:text-5xl font-bold mb-4">
+            <div className="mb-8">
+              <h1 className="text-3xl md:text-5xl font-bold mb-4">
                 {product.title}
               </h1>{" "}
-              <span class="bg-[#E9E1FF] text-[#7E57C2] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
+              <span className="bg-[#E9E1FF] text-[#7E57C2] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
                 {product.category}{" "}
               </span>
             </div>
 
-            <div class="grid gap-6">
-              <div class="lg:col-span-5 space-y-5">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                  <h3 class="text-[#4CAF50] text-3xl font-bold mb-1">
+            <div className="grid gap-6">
+              <div className="lg:col-span-5 space-y-5">
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-[#4CAF50] text-3xl font-bold mb-1">
                     $ {product.price_min} - {product.price_max}
                   </h3>{" "}
-                  <p class="text-gray-500 text-sm font-medium">
+                  <p className="text-gray-500 text-sm font-medium">
                     Price starts from
                   </p>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-md ">
-                  <h3 class="text-xl font-bold mb-6">Product Details</h3>
-                  <div class="space-y-3 text-[15px]">
+                <div className="bg-white p-6 rounded-lg shadow-md ">
+                  <h3 className="text-xl font-bold mb-6">Product Details</h3>
+                  <div className="space-y-3 text-[15px]">
                     <p>
-                      <span class="font-bold">Product ID:</span>{" "}
-                      <span class="text-gray-600 ml-1">{product._id}</span>
+                      <span className="font-bold">Product ID:</span>{" "}
+                      <span className="text-gray-600 ml-1">{product._id}</span>
                     </p>{" "}
                     <p>
-                      <span class="font-bold">Posted:</span>{" "}
-                      <span class="text-gray-600 ml-1">
+                      <span className="font-bold">Posted:</span>{" "}
+                      <span className="text-gray-600 ml-1">
                         {product.created_at}
                       </span>
                     </p>{" "}
                   </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-md ">
-                  <h3 class="text-xl font-bold mb-6">Seller Information</h3>
+                <div className="bg-white p-6 rounded-lg shadow-md ">
+                  <h3 className="text-xl font-bold mb-6">Seller Information</h3>
 
-                  <div class="flex items-center gap-4 mb-6">
-                    <div class="w-14 h-14 rounded-full bg-gray-200 overflow-hidden">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 rounded-full bg-gray-200 overflow-hidden">
                       <img
                         src={product.seller_image}
                         alt="Seller"
-                        class="w-full h-full object-cover"
+                        className="w-full h-full object-cover"
                       />{" "}
                     </div>
                     <div>
-                      <h4 class="font-bold text-lg">{product.seller_name}</h4>{" "}
-                      <p class="text-gray-400 text-xs">{product.email}</p>{" "}
+                      <h4 className="font-bold text-lg">
+                        {product.seller_name}
+                      </h4>{" "}
+                      <p className="text-gray-400 text-xs">
+                        {product.email}
+                      </p>{" "}
                     </div>
                   </div>
 
-                  <div class="space-y-4 text-[15px]">
+                  <div className="space-y-4 text-[15px]">
                     <p>
-                      <span class="font-bold">Location:</span>{" "}
-                      <span class="text-gray-600 ml-1">{product.location}</span>
+                      <span className="font-bold">Location:</span>{" "}
+                      <span className="text-gray-600 ml-1">
+                        {product.location}
+                      </span>
                     </p>{" "}
                     <p>
-                      <span class="font-bold">Contact:</span>{" "}
-                      <span class="text-gray-600 ml-1">
+                      <span className="font-bold">Contact:</span>{" "}
+                      <span className="text-gray-600 ml-1">
                         {product.seller_contact}
                       </span>
                     </p>
-                    <div class="flex items-center">
-                      <span class="font-bold mr-3">Status:</span>
-                      <span class="bg-[#FFC107] text-[#0D1B3E] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">
+                    <div className="flex items-center">
+                      <span className="font-bold mr-3">Status:</span>
+                      <span className="bg-[#FFC107] text-[#0D1B3E] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">
                         {product.status}
                       </span>
                     </div>
@@ -281,7 +299,7 @@ const ProductDetails = () => {
             <tbody>
               {/* row 1 */}
               {bids.map((bid, index) => (
-                <tr>
+                <tr key={bid._id}>
                   <th>{index + 1}</th>
                   <td>
                     <div className="flex items-center gap-3">
