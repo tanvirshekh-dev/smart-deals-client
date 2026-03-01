@@ -1,8 +1,6 @@
 // import axios from "axios";
 import { MoveLeft } from "lucide-react";
-import React from "react";
 import { Link } from "react-router";
-import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 
