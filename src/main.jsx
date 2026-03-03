@@ -31,7 +31,9 @@ const router = createBrowserRouter([
       },
       {
         path: "/createProduct",
-        Component: CreateProduct,
+        element: <PrivetRoute>
+          <CreateProduct></CreateProduct>
+        </PrivetRoute>,
       },
       {
         path: "/login",

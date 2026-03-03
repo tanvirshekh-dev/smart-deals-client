@@ -1,8 +1,51 @@
+// import axios from "axios";
 import { MoveLeft } from "lucide-react";
 import React from "react";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+// import useAxios from "../../Hooks/useAxios";
 
 const CreateProduct = () => {
+  const { user } = useAuth();
+  // const axiosInstance = useAxios()
+  const axiosSecure = useAxiosSecure()
+
+  const handleCreateProduct = (e) => {
+    e.preventDefault();
+    const title = e.target.title.value;
+    const price_min = e.target.price_min.value;
+    const price_max = e.target.price_max.value;
+    const image = e.target.image.value;
+
+    console.log(title, price_min, price_max, image);
+
+    const newProduct = {
+      title,
+      price_max,
+      price_min,
+      image,
+      email: user.email,
+      seller_name: user.displayName,
+    };
+
+    // axios.post("http://localhost:3000/products", newProduct).then((data) => {
+    //   console.log(data.data);
+    //   if (data.data.insertedId) {
+    //     Swal.fire({
+    //       title: "Your Product Has Been Created",
+    //       icon: "success",
+    //     });
+    //   }
+    // });
+
+    axiosSecure.post('/products', newProduct)
+      .then(data => {
+      console.log(data.data)
+    })
+  };
+
   return (
     <div className="bg-gray-100">
       <p className="flex justify-center text-xl font-semibold pt-20 mb-4">
@@ -17,7 +60,7 @@ const CreateProduct = () => {
       {/* form page*/}
       <div className="min-h-screen flex items-center justify-center pb-20">
         <div className="card w-full max-w-3xl bg-base-100 shadow-sm border border-gray-100 p-8">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleCreateProduct}>
             {/* Title & Category */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-control">
@@ -55,7 +98,7 @@ const CreateProduct = () => {
                   Min Price You want to Sale ($)
                 </label>
                 <input
-                  name="minPrice"
+                  name="price_min"
                   type="text"
                   placeholder="e.g. 18.5"
                   className="input input-bordered focus:input-primary transition-all"
@@ -66,7 +109,7 @@ const CreateProduct = () => {
                   Max Price You want to Sale ($)
                 </label>
                 <input
-                  name="maxPrice"
+                  name="price_max"
                   type="text"
                   placeholder="Optional (default = Min Price)"
                   className="input input-bordered focus:input-primary transition-all"
@@ -152,10 +195,10 @@ const CreateProduct = () => {
               </div>
               <div className="form-control">
                 <label className="label font-semibold text-slate-600">
-                  Seller Image URL
+                  Image URL
                 </label>
                 <input
-                  name="sellerImageUrl"
+                  name="image"
                   type="text"
                   placeholder="https://..."
                   className="input input-bordered focus:input-primary transition-all"

@@ -8,12 +8,12 @@ const Navbar = () => {
   const handleSignOutUser = () => {
     signOutUser()
       .then(() => {
-      alert('user logout successfully')
+        alert("user logout successfully");
       })
       .catch(() => {
-      console.log('something error')
-    })
-  }
+        console.log("something error");
+      });
+  };
 
   const links = (
     <>
@@ -23,11 +23,11 @@ const Navbar = () => {
       <li>
         <NavLink to={"/allProducts"}>All Products</NavLink>
       </li>
-      <li>
-        <NavLink to={"/createProduct"}>Create Product</NavLink>
-      </li>
       {user && (
         <>
+          <li>
+            <NavLink to={"/createProduct"}>Create Product</NavLink>
+          </li>
           <li>
             <NavLink to={"/myBids"}>My Bids</NavLink>
           </li>
@@ -72,9 +72,15 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        {
-          user ? <Link onClick={handleSignOutUser} className="btn btn-primary">Sign Out</Link> : <Link to={'/login'} className="btn">Login</Link>
-        }
+        {user ? (
+          <Link onClick={handleSignOutUser} className="btn btn-primary">
+            Sign Out
+          </Link>
+        ) : (
+          <Link to={"/login"} className="btn">
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );
